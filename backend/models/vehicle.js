@@ -1,3 +1,4 @@
+
 const { sequelize, Sequelize } = require("./index");
 
 const Vehicle = sequelize.define("Vehicle", {
