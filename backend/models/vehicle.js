@@ -1,4 +1,3 @@
-
 const { sequelize, Sequelize } = require("./index");
 
 const Vehicle = sequelize.define("Vehicle", {
@@ -10,22 +9,28 @@ const Vehicle = sequelize.define("Vehicle", {
     type: Sequelize.INTEGER, 
     allowNull: false,
     references: {
-      model: "VehicleTypes", // Name of the VehicleType table
-      key: "id",             // The primary key of the VehicleType table
-    }
+      model: "VehicleTypes", // Reference to VehicleType model
+      key: "id",
+    },
+  },
+  numberOfWheels: {
+    type: Sequelize.INTEGER,
+    allowNull: false, // Ensure every vehicle has a defined number of wheels
   },
   isBooked: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false, // By default, the vehicle is not booked
+    defaultValue: false, // Default is false, not booked
   },
+}, {
+  timestamps: true, // Automatically add createdAt and updatedAt fields
 });
 
-// Define the relationship between Vehicle and VehicleType models
+// Associations
 Vehicle.associate = (models) => {
   // A Vehicle belongs to one VehicleType
   Vehicle.belongsTo(models.VehicleType, {
-    foreignKey: "typeId",  // Foreign key in the Vehicle model
-    as: "vehicleType",    // Optional alias for the association
+    foreignKey: "typeId",
+    as: "vehicleType", // Alias for the association
   });
 };
 

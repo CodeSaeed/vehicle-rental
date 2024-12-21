@@ -1,6 +1,5 @@
 const { sequelize, Sequelize } = require("./index");
 
-
 const User = sequelize.define("User", {
   firstName: {
     type: Sequelize.STRING,
@@ -14,9 +13,27 @@ const User = sequelize.define("User", {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true,  // Ensure email is unique
+    validate: {
+      isEmail: {
+        msg: "Please provide a valid email address", // Email validation
+      },
+    },
   },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,  // Ensure password is provided
+    validate: {
+      len: {
+        args: [8, 128],
+        msg: "Password should be at least 8 characters long",
+      },
+    },
+  },
+}, {
+  timestamps: true, // Automatically add createdAt and updatedAt fields
 });
 
+// Associations
 User.associate = (models) => {
   // A User can have many Bookings
   User.hasMany(models.Booking, {
